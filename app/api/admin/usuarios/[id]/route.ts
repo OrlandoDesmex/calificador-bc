@@ -2,34 +2,12 @@ import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { auth } from '@/auth';
 import bcrypt from 'bcryptjs';
-import { readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
-
-const USERS_PATH = join(process.cwd(), 'users.json');
-
-type StoredUser = { id: string; name: string; email: string; password: string; role: string };
-
-function readUsers(): StoredUser[] {
-  return JSON.parse(readFileSync(USERS_PATH, 'utf-8')) as StoredUser[];
-}
-function writeUsers(users: StoredUser[]) {
-  writeFileSync(USERS_PATH, JSON.stringify(users, null, 2), 'utf-8');
-}
+import { readUsers, writeUsers } from '@/lib/usersDb';
 
 async function requireAdmin() {
   const session = await auth();
   if (!session || session.user.role !== 'admin') return null;
   return session;
-}
-
-function fsError(err: unknown) {
-  const msg = err instanceof Error ? err.message : String(err);
-  if (msg.includes('EROFS') || msg.includes('read-only')) {
-    return Response.json({
-      error: 'Sistema de archivos de solo lectura en producción. Edita users.json localmente y haz git push.',
-    }, { status: 503 });
-  }
-  return Response.json({ error: msg }, { status: 500 });
 }
 
 const updateSchema = z.object({
@@ -50,11 +28,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const { name, email, password, role } = parsed.data;
 
   try {
-    const users = readUsers();
+    const users = await readUsers();
     const idx   = users.findIndex((u) => u.id === id);
     if (idx === -1) return Response.json({ error: 'Usuario no encontrado' }, { status: 404 });
 
-    if (role !== undefined && role !== 'admin' && users[idx].role === 'admin') {
+    if (role && role !== 'admin' && users[idx].role === 'admin') {
       if (users.filter((u) => u.role === 'admin').length <= 1) {
         return Response.json({ error: 'Debe existir al menos un administrador' }, { status: 400 });
       }
@@ -65,18 +43,18 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       }
     }
 
-    const updated: StoredUser = { ...users[idx] };
+    const updated = { ...users[idx] };
     if (name)     updated.name     = name;
     if (email)    updated.email    = email.toLowerCase();
     if (password) updated.password = await bcrypt.hash(password, 10);
     if (role)     updated.role     = role;
 
     users[idx] = updated;
-    writeUsers(users);
+    await writeUsers(users);
     const { password: _, ...safe } = updated;
     return Response.json({ user: safe });
   } catch (err) {
-    return fsError(err);
+    return Response.json({ error: String(err) }, { status: 500 });
   }
 }
 
@@ -90,7 +68,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
   }
 
   try {
-    const users  = readUsers();
+    const users  = await readUsers();
     const target = users.find((u) => u.id === id);
     if (!target) return Response.json({ error: 'Usuario no encontrado' }, { status: 404 });
 
@@ -98,9 +76,9 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
       return Response.json({ error: 'Debe existir al menos un administrador' }, { status: 400 });
     }
 
-    writeUsers(users.filter((u) => u.id !== id));
+    await writeUsers(users.filter((u) => u.id !== id));
     return Response.json({ ok: true });
   } catch (err) {
-    return fsError(err);
+    return Response.json({ error: String(err) }, { status: 500 });
   }
 }
