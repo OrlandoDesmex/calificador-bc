@@ -89,5 +89,12 @@
     "email": "ivan.rodriguez@desmex.com",
     "password": "$2b$10$Pyb/PeMdrPW0TRYPPflUkeJ5K4MxagfmiqDYyV/TIwb6yVmKNrlIq",
     "role": "vendedor"
+  },
+  {
+    "id": "14",
+    "name": "Marcus Libaroni",
+    "email": "marcus.libaroni@oilon.com",
+    "password": "$2b$10$NqWwPomioib1J8UcrZ7RJO6WTBZi6dzQqOtG.2SEwTiQwlFZFzgF.",
+    "role": "vendedor"
   }
 ]
