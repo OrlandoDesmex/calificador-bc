@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --desmex-red:       #B71C1C;
+  --desmex-red-dark:  #7F0000;
+  --desmex-bg:        #FAF8F5;
+  --desmex-border:    #E8E2D9;
+}
+
+body {
+  background: var(--desmex-bg);
+}
+
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--desmex-red); }

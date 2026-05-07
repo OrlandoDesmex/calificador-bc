@@ -1,0 +1,93 @@
+[
+  {
+    "id": "1",
+    "name": "Administrador",
+    "email": "admin@desmex.com",
+    "password": "$2b$10$uPnXFyVHKT2WeUUrskqUpeJeAUpoxRsIqtEMYFQ9XjorA4LLv3Cx2",
+    "role": "admin"
+  },
+  {
+    "id": "2",
+    "name": "John von Frantzius",
+    "email": "jvf@desmex.com",
+    "password": "$2b$10$fclDpsuZjFDvW7ZW6zHsSOrN1ZlfWzkRmC82gEPfBcxon4vWaMTvK",
+    "role": "admin"
+  },
+  {
+    "id": "3",
+    "name": "Orlando Carvajal",
+    "email": "ti@desmex.com",
+    "password": "$2b$10$PK0hmN9aCD01dnf8MguZY.CZtR0RuO289lclqG6Bg8W2uxGTKdhQS",
+    "role": "admin"
+  },
+  {
+    "id": "4",
+    "name": "Daniel Medina",
+    "email": "daniel.medina@desmex.com",
+    "password": "$2b$10$E/5LtE0ES1blayX63vA8femuoqCbaARiBC.VLOqm4Jq2qqeDkjF4q",
+    "role": "gerente_ventas"
+  },
+  {
+    "id": "5",
+    "name": "Josue Mosqueda",
+    "email": "josue.mosqueda@desmex.com",
+    "password": "$2b$10$peX/p92/ezcbv0AFdnTV2O/lNUblZzEBOVMHeWWNBc1ZBVruf2dj6",
+    "role": "gerente_ventas"
+  },
+  {
+    "id": "6",
+    "name": "Francisco Gonzalez",
+    "email": "francisco.gonzalez@desmex.com",
+    "password": "$2b$10$3fvF8zxJGOVuSY21OQwrUeZZkkDBFNGmOjDWOxOiKb/15r9pDfk3i",
+    "role": "gerente_ventas"
+  },
+  {
+    "id": "7",
+    "name": "Rebeca Ortiz",
+    "email": "rebeca.ortiz@desmex.com",
+    "password": "$2b$10$Kss1aoVe7EMucWzmh.axnOlkNelpEDbuDhZ9aTuCqAS75vqsz6ZBS",
+    "role": "vendedor"
+  },
+  {
+    "id": "8",
+    "name": "Marco Flores",
+    "email": "marco.flores@desmex.com",
+    "password": "$2b$10$lLjl8Y4aKNncMaqOoD9OLOroeYihXPQ.uAvy9Qk29ND4RGrFMZZSC",
+    "role": "vendedor"
+  },
+  {
+    "id": "9",
+    "name": "Daniela Lara",
+    "email": "daniela.lara@desmex.com",
+    "password": "$2b$10$xBfJmWNUmMuzCcaIxt60M.X/KhmQeq0Nn/vvta6.eYtcnx5fIW2p6",
+    "role": "vendedor"
+  },
+  {
+    "id": "10",
+    "name": "Alexandro Carrasco",
+    "email": "alexandro.carrasco@desmex.com",
+    "password": "$2b$10$rjOlSZtHOZQPU936htYkMu/inKvrn/TaihaoHV1WYiLJblotyEp5i",
+    "role": "vendedor"
+  },
+  {
+    "id": "11",
+    "name": "Saira Gomez",
+    "email": "saira.gomez@desmex.com",
+    "password": "$2b$10$5L8QY0O2Qz2jExbt8QFP4eVdLHJAlrQgLS4OdJPkLGDGk6o9t0Gy6",
+    "role": "vendedor"
+  },
+  {
+    "id": "12",
+    "name": "Daniel Guzman",
+    "email": "daniel.guzman@desmex.com",
+    "password": "$2b$10$u5v.NR66b7y4I9BHkV/L8ufX9etfBeDHPLN7mu1RyhRK8cOONglNC",
+    "role": "vendedor"
+  },
+  {
+    "id": "13",
+    "name": "Jonathan Rodriguez",
+    "email": "ivan.rodriguez@desmex.com",
+    "password": "$2b$10$Pyb/PeMdrPW0TRYPPflUkeJ5K4MxagfmiqDYyV/TIwb6yVmKNrlIq",
+    "role": "vendedor"
+  }
+]
