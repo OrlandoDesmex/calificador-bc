@@ -1,6 +1,7 @@
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
-import { readUsers } from '@/lib/usersDb';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import UsuariosManager from '@/components/UsuariosManager';
 import type { BCUser } from '@/components/UsuariosManager';
 
@@ -8,8 +9,11 @@ export default async function AdminUsuariosPage() {
   const session = await auth();
   if (!session || session.user.role !== 'admin') redirect('/');
 
-  const raw   = await readUsers();
-  const users: BCUser[] = raw.map(({ password: _p, ...u }) => ({ ...u, role: u.role as BCUser['role'] }));
+  const raw = JSON.parse(
+    readFileSync(join(process.cwd(), 'users.json'), 'utf-8')
+  ) as Array<BCUser & { password: string }>;
+
+  const users: BCUser[] = raw.map(({ password: _p, ...u }) => u);
 
   return (
     <div className="space-y-6">

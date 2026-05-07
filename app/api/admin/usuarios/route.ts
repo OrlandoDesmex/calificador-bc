@@ -2,7 +2,22 @@ import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { auth } from '@/auth';
 import bcrypt from 'bcryptjs';
-import { readUsers, writeUsers, nextId } from '@/lib/usersDb';
+import { readFileSync, writeFileSync } from 'fs';
+import { join } from 'path';
+
+const USERS_PATH = join(process.cwd(), 'users.json');
+
+type StoredUser = { id: string; name: string; email: string; password: string; role: string };
+
+function readUsers(): StoredUser[] {
+  return JSON.parse(readFileSync(USERS_PATH, 'utf-8')) as StoredUser[];
+}
+function writeUsers(users: StoredUser[]) {
+  writeFileSync(USERS_PATH, JSON.stringify(users, null, 2), 'utf-8');
+}
+function nextId(users: StoredUser[]): string {
+  return String(users.reduce((m, u) => Math.max(m, parseInt(u.id) || 0), 0) + 1);
+}
 
 async function requireAdmin() {
   const session = await auth();
@@ -13,7 +28,7 @@ async function requireAdmin() {
 export async function GET() {
   if (!await requireAdmin()) return Response.json({ error: 'No autorizado' }, { status: 403 });
   try {
-    const users = (await readUsers()).map(({ password: _, ...u }) => u);
+    const users = readUsers().map(({ password: _, ...u }) => u);
     return Response.json({ items: users });
   } catch (err) {
     return Response.json({ error: String(err) }, { status: 500 });
@@ -36,18 +51,18 @@ export async function POST(req: NextRequest) {
   const { name, email, password, role } = parsed.data;
 
   try {
-    const users = await readUsers();
+    const users = readUsers();
     if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
       return Response.json({ error: 'Ya existe un usuario con ese email' }, { status: 409 });
     }
-    const newUser = {
+    const newUser: StoredUser = {
       id:       nextId(users),
       name,
       email:    email.toLowerCase(),
       password: await bcrypt.hash(password, 10),
       role,
     };
-    await writeUsers([...users, newUser]);
+    writeUsers([...users, newUser]);
     const { password: _, ...safe } = newUser;
     return Response.json({ user: safe }, { status: 201 });
   } catch (err) {
